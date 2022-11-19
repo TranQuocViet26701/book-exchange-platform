@@ -2,7 +2,7 @@ import React from "react";
 import "./Login.css"
 import { Container } from "react-bootstrap";
 
-export default function Login() {
+export default function SignUp() {
   return (
     <Container>
       <form className="Login-form">

@@ -4,7 +4,6 @@ import { Card, Row, Col } from 'react-bootstrap';
 const CardBookInfo = () => {
     return (
         <Card style={{ width: '40rem', margin: '10px', padding: '0' }}>
-            <Card.Header style={{ display: 'flex' }} as='h6' >Book available</Card.Header>
             <Card.Body>
                 <Row>
                     <Col md='4'>

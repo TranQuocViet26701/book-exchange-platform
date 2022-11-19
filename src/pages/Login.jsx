@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import "./Login.css"
 import { Container } from "react-bootstrap";
+import axios from 'axios';
 
 export default function Login() {
-    const [username, setUsername] = useState("Enter Username");
-    const [password, setPassword] = useState("Enter Password");
-    console.log("username", username);
-    console.log("password", password)
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        const loginRes = await axios.post(
+            'https://afternoon-brook-19976.herokuapp.com/users/login-user',
+            {
+                username: username,
+                password: password,
+            }
+        )
+        console.log("loginRes", loginRes.data)
+    }
     
   return (
     <Container> 
@@ -18,8 +29,9 @@ export default function Login() {
             <input
               type="text"
               className="form-control mt-1"
-              placeholder={username}
               onChange={(e)=>setUsername(e.target.value)}
+              placeholder="Enter username"
+              value={username}
             />
           </div>
           <div className="form-group mt-3">
@@ -27,15 +39,19 @@ export default function Login() {
             <input
               type="password"
               className="form-control mt-1"
-              placeholder={password}
-              onChange={(e)=>setUsername(e.target.value)}
+              value={password}
+              onChange={(e)=>setPassword(e.target.value)}
+              placeholder="Enter password"
             />
           </div>
           <div className="d-grid gap-2 mt-3 mb-4">
-            <button type="submit" className="btn btn-primary">
+            <button className="btn btn-primary" onClick={handleSubmit}>
               Sign In
             </button>
           </div>
+          <p>
+            Don't have an account yet? <a href="/register">Sign up now</a>
+          </p>
         </div>
       </form>
     </Container>

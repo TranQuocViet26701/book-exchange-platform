@@ -1,12 +1,27 @@
 import React, { useState } from "react";
 import "./Login.css"
 import { Container } from "react-bootstrap";
+import axios from 'axios';
 
 export default function Login() {
-    const [fullName, setFullName] = useState("Enter Full name");
-    const [username, setUsername] = useState("Enter Username");
-    const [password, setPassword] = useState("Enter Password");
-    const [email, setEmail] = useState("Enter Email");
+    const [name, setName] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+
+    const handleSubmit = async(e) => {
+        e.preventDefault()
+        const signUpRes = await axios.post(
+            'https://afternoon-brook-19976.herokuapp.com/users/create-user',
+            {
+                username: username,
+                password: password,
+                name: name,
+                email: email,
+            }
+        )
+        console.log("signUpRes", signUpRes.data)
+    }
 
   return (
     <Container>
@@ -14,11 +29,13 @@ export default function Login() {
         <div className="Login-form-content">
           <h3 className="Login-form-title">Sign Up</h3>
           <div className="form-group mt-3">
-            <label style={{display:"flex"}}>Full Name</label>
+            <label style={{display:"flex"}}>Name</label>
             <input
               type="email"
               className="form-control mt-1"
-              placeholder={fullName}
+              onChange={(e)=>setName(e.target.value)}
+              placeholder="Enter name"
+              value={name}
             />
           </div>
           <div className="form-group mt-3">
@@ -26,7 +43,9 @@ export default function Login() {
             <input
               type="email"
               className="form-control mt-1"
-              placeholder={username}
+              onChange={(e)=>setUsername(e.target.value)}
+              placeholder="Enter username"
+              value={username}
             />
           </div>
           <div className="form-group mt-3">
@@ -34,7 +53,9 @@ export default function Login() {
             <input
               type="password"
               className="form-control mt-1"
-              placeholder={password}
+              onChange={(e)=>setPassword(e.target.value)}
+              placeholder="Enter password"
+              value={password}
             />
           </div>
           <div className="form-group mt-3">
@@ -42,15 +63,19 @@ export default function Login() {
             <input
               type="email"
               className="form-control mt-1"
-              placeholder={email}
+              onChange={(e)=>setEmail(e.target.value)}
+              placeholder="Enter email"
+              value={email}
             />
           </div>
           <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" onClick={handleSubmit}>
               Sign Up
             </button>
           </div>
-        
+          <p className="mt-3 mb-3">
+            Already have an account? <a href="/login">Sign in now</a>
+          </p>
         </div>
       </form>
     </Container>

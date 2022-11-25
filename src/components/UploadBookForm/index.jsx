@@ -1,141 +1,152 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
 
 function UploadBookForm() {
   const userId = '1';
-  const [availableName, setAvailableName] = useState('');
-  const [availableDesc, setAvailableDesc] = useState('');
-  const [availableImageUrl, setAvailableImageUrl] = useState('');
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-  const [wishName, setWishName] = useState('');
-  const [wishDesc, setWishDesc] = useState('');
-  const [wishImageUrl, setWishImageUrl] = useState('');
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isHaveWishBook, setIsHaveWishBook] = useState(false);
 
-  const [show, setShow] = useState(false);
+  const onSubmit = async (data) => {
+    console.log('data: ', data);
+    const { name1, desc1, image1, name2, desc2, image2 } = data;
 
-  const handleSubmit = async () => {
-    if (!availableName) return;
+    try {
+      const res1 = await axios.post(
+        'https://afternoon-brook-19976.herokuapp.com/book/upload-book',
+        {
+          uId: userId,
+          name: name1,
+          desc: desc1,
+          image: image1,
+        }
+      );
 
-    const res1 = await axios.post(
-      'https://afternoon-brook-19976.herokuapp.com/book/upload-book',
-      {
-        uId: userId,
-        name: availableName,
-        image: availableImageUrl,
+      console.log('res1: ', res1);
+
+      if (!isHaveWishBook) {
+        setIsSuccess(true);
+        reset({
+          name1: '',
+          desc1: '',
+          imageUrl1: '',
+        });
+        return;
       }
-    );
 
-    console.log('res1: ', res1.data);
-
-    if (wishName) {
       const res2 = await axios.post(
         'https://afternoon-brook-19976.herokuapp.com/book/upload-book',
         {
           uId: userId,
-          name: wishName,
-          image: wishImageUrl,
-          isHaving: false,
+          name: name2,
+          desc: desc2,
+          image: image2,
         }
       );
 
-      setWishName('');
-      setWishDesc('');
-      setWishImageUrl('');
-    }
+      console.log('res2: ', res2);
 
-    setAvailableName('');
-    setAvailableDesc('');
-    setAvailableImageUrl('');
-    setShow(true);
+      setIsSuccess(true);
+      reset({
+        name1: '',
+        desc1: '',
+        image1: '',
+        name2: '',
+        desc2: '',
+        image2: '',
+      });
+    } catch (err) {
+      console.log('error: ', err);
+    }
   };
 
   return (
     <Container className="mt-4">
       <Row>
-        {show && (
-          <Alert variant="success" onClose={() => setShow(false)} dismissible>
+        {isSuccess && (
+          <Alert
+            variant="success"
+            onClose={() => setIsSuccess(false)}
+            dismissible
+          >
             <Alert.Heading>Create book successful</Alert.Heading>
           </Alert>
         )}
-      </Row>
-      <Row>
         <Col>
-          <h2>Your available book</h2>
+          <h3>Your available book</h3>
           <Form>
-            <Form.Group className="mb-3 mt-3" controlId="name">
+            <Form.Group className="mb-3 mt-3" controlId="name1">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter your book name"
-                value={availableName}
-                onChange={(e) => setAvailableName(e.target.value)}
+                {...register('name1', {
+                  required: "Please provide your book's name",
+                })}
               />
+              {errors.name1 && (
+                <Form.Text className="text-danger">
+                  {errors.name1.message}
+                </Form.Text>
+              )}
             </Form.Group>
-
-            <Form.Group className="mb-3" controlId="description">
+            <Form.Group className="mb-3" controlId="desc1">
               <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                placeholder="Enter your book description"
-                value={availableDesc}
-                onChange={(e) => setAvailableDesc(e.target.value)}
-              />
+              <Form.Control as="textarea" rows={3} {...register('desc1')} />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="name">
+            <Form.Group className="mb-3" controlId="image1">
               <Form.Label>Image url</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your book image url"
-                value={availableImageUrl}
-                onChange={(e) => setAvailableImageUrl(e.target.value)}
-              />
+              <Form.Control type="text" {...register('image1')} />
             </Form.Group>
           </Form>
         </Col>
         <Col>
-          <h2>Your wish book</h2>
-          <Form>
-            <Form.Group className="mb-3 mt-3" controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your book name"
-                value={wishName}
-                onChange={(e) => setWishName(e.target.value)}
-              />
-            </Form.Group>
+          <Form.Check
+            type="switch"
+            id="switch"
+            value={isHaveWishBook}
+            onChange={() => setIsHaveWishBook((prev) => !prev)}
+            label="Your wish book"
+            className="h3"
+          />
+          {isHaveWishBook && (
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Form.Group className="mb-3 mt-3" controlId="name2">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  {...register('name2', {
+                    required: "Please provide your book's name",
+                  })}
+                />
+                {errors.name2 && (
+                  <Form.Text className="text-danger">
+                    {errors.name2.message}
+                  </Form.Text>
+                )}
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="desc2">
+                <Form.Label>Description</Form.Label>
+                <Form.Control as="textarea" rows={3} {...register('desc2')} />
+              </Form.Group>
 
-            <Form.Group className="mb-3" controlId="description">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                placeholder="Enter your book description"
-                value={wishDesc}
-                onChange={(e) => setWishDesc(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group className="mb-3" controlId="name">
-              <Form.Label>Image url</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter your book image url"
-                value={wishImageUrl}
-                onChange={(e) => setWishImageUrl(e.target.value)}
-              />
-            </Form.Group>
-          </Form>
+              <Form.Group className="mb-3" controlId="image2">
+                <Form.Label>Image url</Form.Label>
+                <Form.Control type="text" {...register('image2')} />
+              </Form.Group>
+            </Form>
+          )}
         </Col>
       </Row>
-      <div className="d-flex justify-content-center">
-        <Button variant="primary" onClick={handleSubmit}>
-          Create Book
-        </Button>
-      </div>
+      <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
     </Container>
   );
 }

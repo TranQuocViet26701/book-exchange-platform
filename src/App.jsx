@@ -1,24 +1,32 @@
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
+import NavbarCustom from './components/NavbarCustom';
 import CreateBook from './pages/CreateBook';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 
-function App() {
-  const loggedIn = false;
-
+function MainApp() {
   return (
     <>
-      <Router>
-        <Route exact path="/">
-          {!loggedIn ? <Redirect to="/login" /> : <Home />}
-        </Route>
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={SignUp} />
+      <NavbarCustom />
+      <Switch>
+        <Route exact path="/" component={Home} />
         <Route path="/create-book" component={CreateBook} />
-      </Router>
+      </Switch>
     </>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={SignUp} />
+        <Route path="/" component={MainApp} />
+      </Switch>
+    </Router>
   );
 }
 

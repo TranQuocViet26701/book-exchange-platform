@@ -1,88 +1,152 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
 
 function UploadBookForm() {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+  const userId = '1';
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-  const handleSubmit = () => {
-    console.log('name: ', name);
-    console.log('description: ', description);
-    console.log('imageUrl: ', imageUrl);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isHaveWishBook, setIsHaveWishBook] = useState(false);
+
+  const onSubmit = async (data) => {
+    console.log('data: ', data);
+    const { name1, desc1, image1, name2, desc2, image2 } = data;
+
+    try {
+      const res1 = await axios.post(
+        'https://afternoon-brook-19976.herokuapp.com/book/upload-book',
+        {
+          uId: userId,
+          name: name1,
+          desc: desc1,
+          image: image1,
+        }
+      );
+
+      console.log('res1: ', res1);
+
+      if (!isHaveWishBook) {
+        setIsSuccess(true);
+        reset({
+          name1: '',
+          desc1: '',
+          imageUrl1: '',
+        });
+        return;
+      }
+
+      const res2 = await axios.post(
+        'https://afternoon-brook-19976.herokuapp.com/book/upload-book',
+        {
+          uId: userId,
+          name: name2,
+          desc: desc2,
+          image: image2,
+        }
+      );
+
+      console.log('res2: ', res2);
+
+      setIsSuccess(true);
+      reset({
+        name1: '',
+        desc1: '',
+        image1: '',
+        name2: '',
+        desc2: '',
+        image2: '',
+      });
+    } catch (err) {
+      console.log('error: ', err);
+    }
   };
 
   return (
-    <Container>
-      <Form>
-        <Form.Group className="mb-3 mt-3" controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter your book name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
+    <Container className="mt-4">
+      <Row>
+        {isSuccess && (
+          <Alert
+            variant="success"
+            onClose={() => setIsSuccess(false)}
+            dismissible
+          >
+            <Alert.Heading>Create book successful</Alert.Heading>
+          </Alert>
+        )}
+        <Col>
+          <h3>Your available book</h3>
+          <Form>
+            <Form.Group className="mb-3 mt-3" controlId="name1">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                {...register('name1', {
+                  required: "Please provide your book's name",
+                })}
+              />
+              {errors.name1 && (
+                <Form.Text className="text-danger">
+                  {errors.name1.message}
+                </Form.Text>
+              )}
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="desc1">
+              <Form.Label>Description</Form.Label>
+              <Form.Control as="textarea" rows={3} {...register('desc1')} />
+            </Form.Group>
 
-        <Form.Group className="mb-3" controlId="description">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            placeholder="Enter your book description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            <Form.Group className="mb-3" controlId="image1">
+              <Form.Label>Image url</Form.Label>
+              <Form.Control type="text" {...register('image1')} />
+            </Form.Group>
+          </Form>
+        </Col>
+        <Col>
+          <Form.Check
+            type="switch"
+            id="switch"
+            value={isHaveWishBook}
+            onChange={() => setIsHaveWishBook((prev) => !prev)}
+            label="Your wish book"
+            className="h3"
           />
-        </Form.Group>
+          {isHaveWishBook && (
+            <Form onSubmit={handleSubmit(onSubmit)}>
+              <Form.Group className="mb-3 mt-3" controlId="name2">
+                <Form.Label>Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  {...register('name2', {
+                    required: "Please provide your book's name",
+                  })}
+                />
+                {errors.name2 && (
+                  <Form.Text className="text-danger">
+                    {errors.name2.message}
+                  </Form.Text>
+                )}
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="desc2">
+                <Form.Label>Description</Form.Label>
+                <Form.Control as="textarea" rows={3} {...register('desc2')} />
+              </Form.Group>
 
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Image url</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter your book image url"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-          />
-        </Form.Group>
-      </Form>
-
-      <Form>
-        <Form.Group className="mb-3 mt-3" controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter your book name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="description">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            placeholder="Enter your book description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Image url</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter your book image url"
-            value={imageUrl}
-            onChange={(e) => setImageUrl(e.target.value)}
-          />
-        </Form.Group>
-
-        <Button variant="primary" onClick={handleSubmit}>
-          Create Book
-        </Button>
-      </Form>
+              <Form.Group className="mb-3" controlId="image2">
+                <Form.Label>Image url</Form.Label>
+                <Form.Control type="text" {...register('image2')} />
+              </Form.Group>
+            </Form>
+          )}
+        </Col>
+      </Row>
+      <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
     </Container>
   );
 }

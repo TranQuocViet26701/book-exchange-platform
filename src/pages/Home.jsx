@@ -13,51 +13,30 @@ const CardTimeLine = ({
   bookImg,
   bookDesc,
 }) => {
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   return (
-    <>
-      <Card style={{ padding: '0', margin: '20px' }}>
-        <Card.Header as="h5" style={{ display: 'flex' }}>
-          <Link to={`/user/${uId}`}>{fullUserName}</Link>
-        </Card.Header>
-        <Card.Body>
-          <Card style={{ width: '40rem', margin: '10px', padding: '0' }}>
-            <Card.Body>
-              <Row>
-                <Col md="4">
-                  <Card.Img src={bookImg} />
-                </Col>
-                <Col md="8">
-                  <Card.Title>{bookName}</Card.Title>
-                  <Card.Text style={{ display: 'flex' }}>{bookDesc}</Card.Text>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-          <div style={{ textAlign: 'right' }}>
-            <Button variant="primary">Send Request</Button>
-          </div>
-        </Card.Body>
-      </Card>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <Card style={{ padding: '0', margin: '20px' }}>
+      <Card.Header as="h5" style={{ display: 'flex' }}>
+        <Link to={`/user/${uId}`}>{fullUserName}</Link>
+      </Card.Header>
+      <Card.Body>
+        <Card style={{ width: '40rem', margin: '10px', padding: '0' }}>
+          <Card.Body>
+            <Row>
+              <Col md="4">
+                <Card.Img src={bookImg} />
+              </Col>
+              <Col md="8">
+                <Card.Title>{bookName}</Card.Title>
+                <Card.Text style={{ display: 'flex' }}>{bookDesc}</Card.Text>
+              </Col>
+            </Row>
+          </Card.Body>
+        </Card>
+        <div style={{ textAlign: 'right' }}>
+          <Button variant="primary">Send Request</Button>
+        </div>
+      </Card.Body>
+    </Card>
   );
 };
 

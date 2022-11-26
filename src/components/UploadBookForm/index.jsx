@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
 function UploadBookForm() {
-  const userId = '1';
   const {
     register,
     handleSubmit,
@@ -18,7 +17,8 @@ function UploadBookForm() {
   const [isHaveWishBook, setIsHaveWishBook] = useState(false);
 
   const onSubmit = async (data) => {
-    if (!localStorage.getItem('currentUser')) history.push('/login');
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) history.push('/login');
 
     console.log('data: ', data);
     const { name1, desc1, image1, name2, desc2, image2 } = data;
@@ -27,9 +27,9 @@ function UploadBookForm() {
       const res1 = await axios.post(
         'https://afternoon-brook-19976.herokuapp.com/book/upload-book',
         {
-          uId: userId,
+          uId: currentUser,
           name: name1,
-          desc: desc1,
+          description: desc1,
           image: image1,
         }
       );
@@ -49,10 +49,11 @@ function UploadBookForm() {
       const res2 = await axios.post(
         'https://afternoon-brook-19976.herokuapp.com/book/upload-book',
         {
-          uId: userId,
+          uId: currentUser,
           name: name2,
-          desc: desc2,
+          description: desc2,
           image: image2,
+          isHaving: false,
         }
       );
 

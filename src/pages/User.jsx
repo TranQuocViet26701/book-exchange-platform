@@ -61,10 +61,6 @@ export default function User() {
     getAllBooks();
   }, [userId]);
 
-  console.log('user info: ', userInfo);
-  console.log('available books:', availableBookList);
-  console.log('wish books:', wishBookList);
-
   return (
     <Container>
       {userInfo && (
@@ -81,7 +77,7 @@ export default function User() {
                   <CardBook
                     key={book._id}
                     name={book.name}
-                    desc={book.desc}
+                    desc={book.description}
                     image={book.image}
                   />
                 ))}
@@ -94,7 +90,7 @@ export default function User() {
                   <CardBook
                     key={book._id}
                     name={book.name}
-                    desc={book.desc}
+                    desc={book.description}
                     image={book.image}
                   />
                 ))}

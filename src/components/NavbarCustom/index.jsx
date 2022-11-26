@@ -21,7 +21,7 @@ function NavbarCustom() {
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img
             src={logo}
             height="30"

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Modal } from 'react-bootstrap';
-import { Card, Button } from 'react-bootstrap';
-import { Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Card, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import RequestModal from '../components/Modal';
 
 const CardTimeLine = ({ uId, bookName, fullUserName, bookImg, bookDesc }) => {
   return (
@@ -28,7 +27,7 @@ const CardTimeLine = ({ uId, bookName, fullUserName, bookImg, bookDesc }) => {
           </Col>
         </Row>
         <div style={{ textAlign: 'right' }}>
-          <Button variant="primary">Send Request</Button>
+          <RequestModal />
         </div>
       </Card.Body>
     </Card>
@@ -62,6 +61,7 @@ function Home() {
             bookName={book.bookName}
             bookImg={book.bookImg}
             bookDesc={book.bookDesc}
+            bookId={book.bookId}
           />
         ))}
     </Container>

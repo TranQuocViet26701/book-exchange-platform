@@ -1,9 +1,22 @@
+import { useEffect, useState } from 'react';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 
 function NavbarCustom() {
   const history = useHistory();
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const user = localStorage.getItem('currentUser');
+
+    if (user) setCurrentUser(user);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser');
+    history.push('/login');
+  };
 
   return (
     <Navbar bg="dark" variant="dark">
@@ -25,6 +38,11 @@ function NavbarCustom() {
           </Nav.Link>
         </Nav>
         <Button onClick={() => history.push('/login')}>Login</Button>
+        {currentUser && (
+          <Button style={{ marginLeft: '5px' }} onClick={handleLogout}>
+            Logout
+          </Button>
+        )}
       </Container>
     </Navbar>
   );

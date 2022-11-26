@@ -36,10 +36,14 @@ function NavbarCustom() {
           <Nav.Link as={Link} to="/create-book">
             Books
           </Nav.Link>
+          <Nav.Link as={Link} to="/profile">
+            Profile
+          </Nav.Link>
         </Nav>
-        <Button onClick={() => history.push('/login')}>Login</Button>
-        {currentUser && (
-          <Button style={{ marginLeft: '5px' }} onClick={handleLogout}>
+        {!currentUser ? (
+          <Button onClick={() => history.push('/login')}>Login</Button>
+        ) : (
+          <Button variant="warning" onClick={handleLogout}>
             Logout
           </Button>
         )}

@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 function CardBook({ name, desc, image }) {
   return (
-    <Card className="mb-1">
+    <Card className="mb-4" style={{ padding: '0' }}>
       <Card.Body>
         <Row>
           <Col md="4">
@@ -13,7 +13,11 @@ function CardBook({ name, desc, image }) {
           </Col>
           <Col md="8">
             <Card.Title>{name}</Card.Title>
-            <Card.Text>{desc}</Card.Text>
+            <Card.Text className="text-muted">
+              {desc
+                ? desc
+                : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pulvinar neque dui, in ultricies libero facilisis a. Donec accumsan mauris at feugiat euismod. Sed ac volutpat diam, ut tincidunt arcu. Suspendisse quis eleifend nibh. Nam placerat euismod massa, eu sagittis felis. Donec ultricies luctus vehicula. Phasellus consequat sapien nec libero tincidunt tincidunt.'}
+            </Card.Text>
           </Col>
         </Row>
       </Card.Body>

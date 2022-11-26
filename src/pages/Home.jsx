@@ -5,33 +5,28 @@ import { Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const CardTimeLine = ({
-  uId,
-  bookName,
-  fullUserName,
-  bookId,
-  bookImg,
-  bookDesc,
-}) => {
+const CardTimeLine = ({ uId, bookName, fullUserName, bookImg, bookDesc }) => {
   return (
-    <Card style={{ padding: '0', margin: '20px' }}>
-      <Card.Header as="h5" style={{ display: 'flex' }}>
-        <Link to={`/user/${uId}`}>{fullUserName}</Link>
+    <Card style={{ width: '50%', margin: '20px auto', padding: '0' }}>
+      <Card.Header as="h5">
+        <Link style={{ textDecoration: 'none' }} to={`/user/${uId}`}>
+          {fullUserName}
+        </Link>
       </Card.Header>
       <Card.Body>
-        <Card style={{ width: '40rem', margin: '10px', padding: '0' }}>
-          <Card.Body>
-            <Row>
-              <Col md="4">
-                <Card.Img src={bookImg} />
-              </Col>
-              <Col md="8">
-                <Card.Title>{bookName}</Card.Title>
-                <Card.Text style={{ display: 'flex' }}>{bookDesc}</Card.Text>
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
+        <Row>
+          <Col md="4">
+            <Card.Img src={bookImg} />
+          </Col>
+          <Col md="8">
+            <h4>{bookName}</h4>
+            <p className="text-muted">
+              {bookDesc
+                ? bookDesc
+                : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pulvinar neque dui, in ultricies libero facilisis a. Donec accumsan mauris at feugiat euismod. Sed ac volutpat diam, ut tincidunt arcu. Suspendisse quis eleifend nibh. Nam placerat euismod massa, eu sagittis felis. Donec ultricies luctus vehicula. Phasellus consequat sapien nec libero tincidunt tincidunt.'}
+            </p>
+          </Col>
+        </Row>
         <div style={{ textAlign: 'right' }}>
           <Button variant="primary">Send Request</Button>
         </div>
@@ -48,6 +43,7 @@ function Home() {
       const res = await axios.get(
         'https://afternoon-brook-19976.herokuapp.com/book/get-all-available-books'
       );
+      console.log(res.data);
       setBooksList(res.data);
     };
     getAllBooks();

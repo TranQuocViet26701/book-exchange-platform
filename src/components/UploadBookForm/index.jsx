@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 
 function UploadBookForm() {
   const userId = '1';
@@ -11,11 +12,14 @@ function UploadBookForm() {
     reset,
     formState: { errors },
   } = useForm();
+  const history = useHistory();
 
   const [isSuccess, setIsSuccess] = useState(false);
   const [isHaveWishBook, setIsHaveWishBook] = useState(false);
 
   const onSubmit = async (data) => {
+    if (!localStorage.getItem('currentUser')) history.push('/login');
+
     console.log('data: ', data);
     const { name1, desc1, image1, name2, desc2, image2 } = data;
 

@@ -19,7 +19,7 @@ export default function Login() {
       }
     );
     if (loginRes.data.code === 102) {
-      localStorage.setItem('useId', loginRes.data.data.user._id);
+      localStorage.setItem('currentUser', loginRes.data.data.user._id);
       history.push('/');
     }
   };

@@ -4,7 +4,14 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import RequestModal from '../components/Modal';
 
-const CardTimeLine = ({ uId, bookName, fullUserName, bookImg, bookDesc }) => {
+const CardTimeLine = ({
+  uId,
+  bookName,
+  fullUserName,
+  bookImg,
+  bookDesc,
+  bookId,
+}) => {
   return (
     <Card style={{ width: '50%', margin: '20px auto', padding: '0' }}>
       <Card.Header as="h5">
@@ -27,7 +34,7 @@ const CardTimeLine = ({ uId, bookName, fullUserName, bookImg, bookDesc }) => {
           </Col>
         </Row>
         <div style={{ textAlign: 'right' }}>
-          <RequestModal />
+          <RequestModal bookId={bookId} />
         </div>
       </Card.Body>
     </Card>

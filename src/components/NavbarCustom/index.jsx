@@ -36,6 +36,9 @@ function NavbarCustom() {
           <Nav.Link as={Link} to="/create-book">
             Books
           </Nav.Link>
+          <Nav.Link as={Link} to={`/notification/${currentUser}`}>
+            Notification
+          </Nav.Link>
           <Nav.Link as={Link} to="/profile">
             Profile
           </Nav.Link>

@@ -32,3 +32,51 @@
 .read-the-docs {
   color: #888;
 }
+
+.notification-container {
+  padding: 30px;
+  box-shadow: 0px 0px 0px rgb(231, 231, 231);
+}
+
+.notification li {
+  border: 1px solid #000;
+  margin-bottom: 30px;
+  list-style: none;
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
+}
+
+.notification .book-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+/* .notification .book-item-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+} */
+
+.notification img {
+  display: block;
+  width: 300px;
+}
+
+.notification .accept-btn {
+  outline: none;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(10, 136, 94);
+  color: #fff;
+  padding: 8px 20px;
+}
+
+.notification h6 {
+  margin-top: 20px;
+}

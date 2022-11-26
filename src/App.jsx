@@ -4,6 +4,7 @@ import NavbarCustom from './components/NavbarCustom';
 import CreateBook from './pages/CreateBook';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Notification from './pages/Notifications';
 import Profile from './pages/Profile';
 import SignUp from './pages/SignUp';
 import User from './pages/User';
@@ -17,6 +18,7 @@ function MainApp() {
         <Route path="/create-book" component={CreateBook} />
         <Route path="/user/:userId" component={User} />
         <Route path="/profile" component={Profile} />
+        <Route path="/notification/:id" component={Notification} />
       </Switch>
     </>
   );
